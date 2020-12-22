@@ -8,16 +8,25 @@ export default[
         component:Home
     },
     {
-        path:'/search',
+        path:'/search/:keyword',
         component:Search,
-        name:'search'
+        name:'search',
+        props(route){
+            return{keyword:route.params.keyword,keyword2:route.query.keyword2}
+        }
     },
     {
         path:'/login',
-        component:Login
+        component:Login,
+        meta:{
+            isFooterShow:true
+        }
     },
     {
         path:'/register',
-        component:Register
+        component:Register,
+        meta:{
+            isFooterShow:true
+        }
     },
 ]
