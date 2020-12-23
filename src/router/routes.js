@@ -8,7 +8,7 @@ export default[
         component:Home
     },
     {
-        path:'/search/:keyword',
+        path:'/search/:keyword?',
         component:Search,
         name:'search',
         props(route){
