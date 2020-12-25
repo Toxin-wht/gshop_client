@@ -9,7 +9,7 @@
               class="item"
               v-for="(c1, index) in categoryList"
               :key="c1.categoryId"
-              :class="{active: currentIndex === index }"
+              :class="{active: currentIndex === index}"
               @mouseenter="isShowItem(index)"
             >
               <h3>
