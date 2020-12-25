@@ -121,10 +121,12 @@ export default {
         } else if (category3id) {
           query.category3Id = category3id;
         }
-        this.$router.push({
+        const location={
           name: "search",
           query,
-        });
+          params:this.$route.params
+        }
+        this.$router.push(location);
       }
     },
     // isShowItem:_.throttle(function(index) {

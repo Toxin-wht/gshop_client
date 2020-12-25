@@ -12,7 +12,8 @@ export default[
         component:Search,
         name:'search',
         props(route){
-            return{keyword:route.params.keyword,keyword2:route.query.keyword2}
+            // return{keyword:route.params.keyword,keyword2:route.query.keyword2}
+            return{keyword:route.params.keyword}
         }
     },
     {
