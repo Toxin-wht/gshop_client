@@ -1,5 +1,6 @@
 <template>
   <div>
+    <TypeNav></TypeNav>
     <p>Search</p>
 <!--    <h2>{{this.$route.params.keyword}}</h2>-->
 <!--    <h2>{{this.$route.query.keyword2}}</h2>-->

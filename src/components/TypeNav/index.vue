@@ -1,64 +1,66 @@
 <template>
   <div class="type-nav">
     <div class="container">
-      <div @mouseleave="currentIndex=-1">
+      <div @mouseleave="leave" @mouseenter="enter">
         <h2 class="all">全部商品分类</h2>
-        <div class="sort">
-          <div class="all-sort-list2" @click="goSearch">
-            <div
-              class="item"
-              v-for="(c1, index) in categoryList"
-              :key="c1.categoryId"
-              :class="{active: currentIndex === index}"
-              @mouseenter="isShowItem(index)"
-            >
-              <h3>
-                <!-- <router-link :to="`/search?categoryName=${c1.categoryName}&category1Id=${c1.categoryId}`">{{c1.categoryName}}</router-link> -->
-                <!-- <a href="javascript:;" @click="$router.push(`/search?categoryName=${c1.categoryName}&category1Id=${c1.categoryId}`)">{{c1.categoryName}}</a> -->
-                <a
-                  href="javascript:;"
-                  :data-categoryName="c1.categoryName"
-                  :data-category1Id="c1.categoryId"
-                  >{{ c1.categoryName }}</a
-                >
-              </h3>
-              <div class="item-list clearfix">
-                <div
-                  class="subitem"
-                  v-for="c2 in c1.categoryChild"
-                  :key="c2.categoryId"
-                >
-                  <dl class="fore">
-                    <dt>
-                      <!-- <a href="">{{c2.categoryName}}</a> -->
-                      <!-- <router-link :to="`/search?categoryName=${c2.categoryName}&category2Id=${c2.categoryId}`">{{c2.categoryName}}</router-link> -->
-                      <!-- <a href="javascript:;" @click="$router.push(`/search?categoryName=${c2.categoryName}&category2Id=${c2.categoryId}`)">{{c2.categoryName}}</a> -->
-                      <a
-                        href="javascript:;"
-                        :data-categoryName="c2.categoryName"
-                        :data-category2Id="c2.categoryId"
-                        >{{ c2.categoryName }}</a
-                      >
-                    </dt>
-                    <dd>
-                      <em v-for="c3 in c2.categoryChild" :key="c3.categoryId">
-                        <!-- <a href="">{{c3.categoryName}}</a> -->
-                        <!-- <router-link :to="`/search?categoryName=${c3.categoryName}&category3Id=${c3.categoryId}`">{{c3.categoryName}}</router-link> -->
-                        <!-- <a href="javascript:;" @click="$router.push(`/search?categoryName=${c3.categoryName}&category3Id=${c3.categoryId}`)">{{c3.categoryName}}</a> -->
+        <transition name="list">
+          <div class="sort" v-show="isShowFirst">
+            <div class="all-sort-list2" @click="goSearch">
+              <div
+                class="item"
+                v-for="(c1, index) in categoryList"
+                :key="c1.categoryId"
+                :class="{active: currentIndex === index}"
+                @mouseenter="isShowItem(index)"
+              >
+                <h3>
+                  <!-- <router-link :to="`/search?categoryName=${c1.categoryName}&category1Id=${c1.categoryId}`">{{c1.categoryName}}</router-link> -->
+                  <!-- <a href="javascript:;" @click="$router.push(`/search?categoryName=${c1.categoryName}&category1Id=${c1.categoryId}`)">{{c1.categoryName}}</a> -->
+                  <a
+                    href="javascript:;"
+                    :data-categoryName="c1.categoryName"
+                    :data-category1Id="c1.categoryId"
+                    >{{ c1.categoryName }}</a
+                  >
+                </h3>
+                <div class="item-list clearfix">
+                  <div
+                    class="subitem"
+                    v-for="c2 in c1.categoryChild"
+                    :key="c2.categoryId"
+                  >
+                    <dl class="fore">
+                      <dt>
+                        <!-- <a href="">{{c2.categoryName}}</a> -->
+                        <!-- <router-link :to="`/search?categoryName=${c2.categoryName}&category2Id=${c2.categoryId}`">{{c2.categoryName}}</router-link> -->
+                        <!-- <a href="javascript:;" @click="$router.push(`/search?categoryName=${c2.categoryName}&category2Id=${c2.categoryId}`)">{{c2.categoryName}}</a> -->
                         <a
                           href="javascript:;"
-                          :data-categoryName="c3.categoryName"
-                          :data-category3Id="c3.categoryId"
-                          >{{ c3.categoryName }}</a
+                          :data-categoryName="c2.categoryName"
+                          :data-category2Id="c2.categoryId"
+                          >{{ c2.categoryName }}</a
                         >
-                      </em>
-                    </dd>
-                  </dl>
+                      </dt>
+                      <dd>
+                        <em v-for="c3 in c2.categoryChild" :key="c3.categoryId">
+                          <!-- <a href="">{{c3.categoryName}}</a> -->
+                          <!-- <router-link :to="`/search?categoryName=${c3.categoryName}&category3Id=${c3.categoryId}`">{{c3.categoryName}}</router-link> -->
+                          <!-- <a href="javascript:;" @click="$router.push(`/search?categoryName=${c3.categoryName}&category3Id=${c3.categoryId}`)">{{c3.categoryName}}</a> -->
+                          <a
+                            href="javascript:;"
+                            :data-categoryName="c3.categoryName"
+                            :data-category3Id="c3.categoryId"
+                            >{{ c3.categoryName }}</a
+                          >
+                        </em>
+                      </dd>
+                    </dl>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </transition>
       </div>
       <nav class="nav">
         <a href="###">服装城</a>
@@ -82,8 +84,14 @@ export default {
   name: "TypeNav",
   data() {
     return {
-      currentIndex: -1,
+      currentIndex: -2,
+      isShowFirst:false
     };
+  },
+  created(){
+    if(this.$route.path==='/'){
+      this.isShowFirst=true
+    }
   },
   computed: {
     //   categoryList(){
@@ -123,10 +131,21 @@ export default {
     //    console.log(index); 
     //    this.currentIndex = index;
     // },100),
-    isShowItem:throttle(function(index) {
-       console.log(index); 
-       this.currentIndex = index;
+    isShowItem:throttle(function(index) { 
+       if(this.currentIndex!==-2){
+          this.currentIndex = index;
+       }
     },60),
+    enter(){
+      this.currentIndex=-1;
+      this.isShowFirst=true
+    },
+    leave(){
+      this.currentIndex=-2;
+      if(this.$route.path!=='/'){
+        this.isShowFirst=false
+      }
+    }
   },
 };
 </script>
@@ -171,7 +190,13 @@ export default {
       position: absolute;
       background: #fafafa;
       z-index: 999;
-
+      &.list-enter-active,&.list-leave-active{
+        transition: all .5s;
+      }
+      &.list-leave-to,&.list-enter{
+        opacity: 0;
+        height: 0;
+      }
       .all-sort-list2 {
         .item {
           h3 {
