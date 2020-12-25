@@ -6,3 +6,5 @@ export function reqCategoryList() {
         method:'get'
     })
 }
+
+export const reqBannerList=()=>ajax('cms/banner')
