@@ -12,3 +12,5 @@ export const reqBannerList=()=>ajax('cms/banner')
 
 export const reqRecommends=()=>mockAjax('/recommends')
 export const reqFloors=()=>mockAjax('/floors')
+
+export const reqSearch=(searchParms)=>ajax.post('/list',searchParms)
