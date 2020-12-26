@@ -1,4 +1,5 @@
 import ajax from './ajax'
+import mockAjax from './mockAjax'
 // product/getBaseCategoryList  GET
 export function reqCategoryList() {
     return ajax({
@@ -8,3 +9,6 @@ export function reqCategoryList() {
 }
 
 export const reqBannerList=()=>ajax('cms/banner')
+
+export const reqRecommends=()=>mockAjax('/recommends')
+export const reqFloors=()=>mockAjax('/floors')

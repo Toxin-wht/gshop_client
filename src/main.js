@@ -5,6 +5,7 @@ import TypeNav from './components/TypeNav'
 import store from './store'
 // import 'swiper/css/swiper.min.css'
 import './plugins/swiper'
+import './mock/mockServer'
 Vue.config.productionTip=false;
 
 Vue.component(TypeNav.name,TypeNav)
