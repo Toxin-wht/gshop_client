@@ -126,7 +126,12 @@ export default {
           query,
           params:this.$route.params
         }
-        this.$router.push(location);
+        if(this.$route.path==='/'){
+          this.$router.push(location);
+        }else{
+          this.$router.replace(location);
+        } 
+        this.leave()
       }
     },
     // isShowItem:_.throttle(function(index) {

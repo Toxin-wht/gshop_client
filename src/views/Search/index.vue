@@ -11,15 +11,27 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <li class="with-x">手机</li>
-            <li class="with-x">iphone<i>×</i></li>
-            <li class="with-x">华为<i>×</i></li>
-            <li class="with-x">OPPO<i>×</i></li>
+            <li class="with-x" v-if="options.categoryName">
+              {{options.categoryName}}
+              <i @click="removeCategoryName">×</i>
+            </li>
+            <li class="with-x" v-if="options.keyword">
+              {{options.keyword}}
+              <i @click="removeKeyword"> ×</i>
+            </li>
+            <li class="with-x" v-if="options.trademark">
+              {{options.trademark}}
+              <i @click="removeTrademark"> ×</i>
+            </li>
+            <li class="with-x" v-for="(prop,index) in options.props" :key="prop">
+              {{prop}}
+              <i @click="removeProps(index)"> ×</i>
+            </li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector />
+        <SearchSelector :setTrademark="setTrademark"  @addProp="addProp"/>
 
         <!--details-->
         <div class="details clearfix">
@@ -124,6 +136,25 @@ import SearchSelector from "./SearchSelector/SearchSelector";
 import {mapGetters} from 'vuex'
 export default {
   name: "Search",
+  data(){
+    return{
+      options:{
+        category1Id: '', // 一级分类ID
+        category2Id: '', // 二级分类ID
+        category3Id: '', // 三级分类ID
+        categoryName: '', // 分类名称
+
+        keyword: '', // 搜索关键字
+        props: [], // ["属性ID:属性值:属性名"]示例: ["2:6.0～6.24英寸:屏幕尺寸"]
+
+        trademark: '', // 品牌: "ID:品牌名称"示例: "1:苹果"
+        order: '', // 排序方式 1: 综合,2: 价格 asc: 升序,desc: 降序 示例: "1:desc"
+
+        pageNo: 1, // 页码
+        pageSize: 20, // 每页数量
+      }
+    }
+  },
   computed:{
     // ...mapState({
     //   goodsList:state=>state.search.goodsList.goodsList
@@ -133,11 +164,68 @@ export default {
   components: {
     SearchSelector,
   },
-  mounted(){
-    this.$store.dispatch('getgoodsList',{
-      pageNo:1,
-      pageSize:20
-    })
+  watch:{
+    $route:{
+      // deep:true,
+      handler(){
+        this.updateOptions()
+        this.reqProductionList()
+      },
+      immediate:true
+    }
+  },
+  methods:{
+    updateOptions(){
+      const {keyword} =this.$route.params
+      const {categoryName,category1Id,category2Id,category3Id,} = this.$route.query
+      this.options={
+        ...this.options,
+        keyword,
+        categoryName,
+        category1Id,
+        category2Id,
+        category3Id
+      }
+    },
+    reqProductionList(){
+      this.$store.dispatch('getgoodsList',this.options)
+    },
+    removeCategoryName(){
+      // this.options.categoryName=''
+      // this.options.category1Id=''
+      // this.options.category2Id=''
+      // this.options.category3Id=''
+      this.$router.replace({
+        name:'search',
+        params:this.$route.params
+      })
+    },
+    removeKeyword(){
+      this.options.keyword=''
+      this.$router.replace({
+        name:'search',
+        query:this.$route.query
+      })
+      this.$bus.$emit('deleteKeyword')
+    },
+    setTrademark(trademark){
+      if(this.options.trademark===trademark) return
+      this.options.trademark=trademark
+      this.reqProductionList()
+    },
+    removeTrademark(){
+      this.options.trademark=''
+      this.reqProductionList()
+    },
+    addProp(prop){
+      if(this.options.props.includes(prop))return
+      this.options.props.push(prop)
+      this.reqProductionList()
+    },
+    removeProps(index){
+      this.options.props.splice(index,1)
+      this.reqProductionList()
+    }
   }
 };
 </script>

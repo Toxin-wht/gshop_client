@@ -35,7 +35,6 @@ export default {
   },
   mounted(){
     this.$store.dispatch('getfloors')
-    this.$store.dispatch('getrecommends')
   }
 }
 </script>

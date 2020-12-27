@@ -64,8 +64,22 @@ export default {
             }
             // this.$router.push(location,()=>{})
             // this.$router.push(location).catch(()=>{})
-            this.$router.push(location)
+            if(this.$route.path==='/'){
+                this.$router.push(location)
+            }else{
+                this.$router.replace(location)
+            }
+            
+        },
+        deleteKeyword(){
+            this.keyword=''
         }
+    },
+    mounted(){
+        this.$bus.$on('deleteKeyword',this.deleteKeyword)
+    },
+    beforeDestroy(){
+        this.$bus.$off('deleteKeyword')
     }
 }
 </script>
