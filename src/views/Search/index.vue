@@ -38,11 +38,19 @@
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <li :class="{active:orderArr[0]==='1'}" @click="setOrder('1')">
+                  <a href="javascript:">
+                    综合
+                    <i class="iconfont"
+                    :class="orderArr[1]==='desc'? 'icondown':'iconup'"
+                    v-if="orderArr[0]==='1'"
+                    ></i>
+                  </a>
                 </li>
                 <li>
-                  <a href="#">销量</a>
+                  <a href="#">
+                    销量
+                  </a>
                 </li>
                 <li>
                   <a href="#">新品</a>
@@ -50,11 +58,14 @@
                 <li>
                   <a href="#">评价</a>
                 </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
+                <li :class="{active:orderArr[0]==='2'}" @click="setOrder('2')" >
+                  <a href="javascript:">
+                    价格
+                    <i class="iconfont"
+                    :class="orderArr[1]==='desc'? 'icondown':'iconup'"
+                    v-if="orderArr[0]==='2'"
+                    ></i>
+                  </a>
                 </li>
               </ul>
             </div>
@@ -148,7 +159,7 @@ export default {
         props: [], // ["属性ID:属性值:属性名"]示例: ["2:6.0～6.24英寸:屏幕尺寸"]
 
         trademark: '', // 品牌: "ID:品牌名称"示例: "1:苹果"
-        order: '', // 排序方式 1: 综合,2: 价格 asc: 升序,desc: 降序 示例: "1:desc"
+        order: '2:desc', // 排序方式 1: 综合,2: 价格 asc: 升序,desc: 降序 示例: "1:desc"
 
         pageNo: 1, // 页码
         pageSize: 20, // 每页数量
@@ -159,7 +170,10 @@ export default {
     // ...mapState({
     //   goodsList:state=>state.search.goodsList.goodsList
     // })
-    ...mapGetters(['goodsList'])
+    ...mapGetters(['goodsList']),
+    orderArr(){
+      return this.options.order.split(':')
+    }
   },
   components: {
     SearchSelector,
@@ -225,6 +239,17 @@ export default {
     removeProps(index){
       this.options.props.splice(index,1)
       this.reqProductionList()
+    },
+    setOrder(orderFlag){
+      let [flag,type] =this.orderArr
+      if(flag===orderFlag){
+        type=type==='desc'?'asc':'desc'
+      }else{
+        flag=orderFlag
+        type="desc"
+      }
+      this.options.order=flag+':'+type
+      this.reqProductionList(this.options)
     }
   }
 };
