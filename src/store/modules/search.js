@@ -11,6 +11,13 @@ const mutations={
 }
 const actions={
     async getgoodsList({commit},searchParms){
+        searchParms={...searchParms}
+        Object.keys(searchParms).forEach(item=>{
+            if(searchParms[item]===''||Array.isArray(searchParms[item])&&searchParms[item].length===0){
+                delete searchParms[item]
+            }
+        })
+
         const result=await reqSearch(searchParms);
         if(result.code===200){
             commit('GET_GOODS_LIST',result.data)
