@@ -79,6 +79,16 @@ export default {
           this.myCurrentPage=page
           this.$emit('change',page)
       }
+  },
+  watch:{
+      currentPage:{
+          handler(value){
+            this.myCurrentPage=value
+          }        
+      }
+  },
+  mounted(){
+      console.log(this.myCurrentPage);
   }
 }
 </script>
