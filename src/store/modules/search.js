@@ -35,6 +35,9 @@ const getters={
     //品牌列表
     trademarkList(state){
         return state.goodsList.trademarkList||[]
+    },
+    total(state){
+        return state.goodsList.total || 0
     }
 
 }

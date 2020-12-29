@@ -106,35 +106,13 @@
               </li>
             </ul>
           </div>
-          <div class="fr page">
-            <div class="sui-pagination clearfix">
-              <ul>
-                <li class="prev disabled">
-                  <a href="#">«上一页</a>
-                </li>
-                <li class="active">
-                  <a href="#">1</a>
-                </li>
-                <li>
-                  <a href="#">2</a>
-                </li>
-                <li>
-                  <a href="#">3</a>
-                </li>
-                <li>
-                  <a href="#">4</a>
-                </li>
-                <li>
-                  <a href="#">5</a>
-                </li>
-                <li class="dotted"><span>...</span></li>
-                <li class="next">
-                  <a href="#">下一页»</a>
-                </li>
-              </ul>
-              <div><span>共10页&nbsp;</span></div>
-            </div>
-          </div>
+          <Pagination
+          :currentPage="options.pageNo"
+          :pageSize="options.pageSize"
+          :total="total"
+          :showPage="5"
+          @change="reqProductionList"
+          ></Pagination>
         </div>
       </div>
     </div>
@@ -162,7 +140,7 @@ export default {
         order: '1:desc', // 排序方式 1: 综合,2: 价格 asc: 升序,desc: 降序 示例: "1:desc"
 
         pageNo: 1, // 页码
-        pageSize: 20, // 每页数量
+        pageSize: 3, // 每页数量
       }
     }
   },
@@ -170,7 +148,7 @@ export default {
     // ...mapState({
     //   goodsList:state=>state.search.goodsList.goodsList
     // })
-    ...mapGetters(['goodsList']),
+    ...mapGetters(['goodsList','total']),
     orderArr(){
       return this.options.order.split(':')
     }
@@ -201,7 +179,8 @@ export default {
         category3Id
       }
     },
-    reqProductionList(){
+    reqProductionList(page=1){
+      this.options.pageNo=page
       this.$store.dispatch('getgoodsList',this.options)
     },
     removeCategoryName(){
