@@ -2,6 +2,8 @@ import Home from '@/views/Home'
 import Search from '@/views/Search'
 import Login from '@/views/Login'
 import Register from '@/views/Register'
+import ShopDetail from '@/views/ShopDetail'
+import AddCartSuccess from '@/views/AddCartSuccess'
 export default[
     {
         path:'/',
@@ -30,4 +32,12 @@ export default[
             isFooterShow:true
         }
     },
+    {
+        path:'/detail/:skuId',
+        component:ShopDetail
+    },
+    {
+        path:'/addcart',
+        component:AddCartSuccess
+    }
 ]

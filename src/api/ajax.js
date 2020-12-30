@@ -5,7 +5,7 @@ import 'nprogress/nprogress.css'
 const service = axios.create({
     // baseURL:'http://39.99.186.36/api',
     baseURL:'/api',
-    timeout:5000
+    timeout:20000
 })
 service.interceptors.request.use(config=>{
     NProgress.start()
@@ -19,7 +19,8 @@ service.interceptors.response.use(
     error=>{
         NProgress.done()
         alert(error.message||'未知请求错误')
-        throw error
+        // throw error
+        return Promise.reject(error)
     }
 )
 export default service
