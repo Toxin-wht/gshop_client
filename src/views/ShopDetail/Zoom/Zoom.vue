@@ -31,12 +31,12 @@
         this.defaultIndex=index
       },
       magnifying(event){
-        const mouseX=event.offsetX
-        const mouseY=event.offsetY
+        let mouseX=event.offsetX
+        let mouseY=event.offsetY
 
-        const mask = this.$refs.mask
-        const maskX=mouseX-mask.offsetWidth/2
-        const maskY=mouseY-mask.offsetHeight/2
+        let mask = this.$refs.mask
+        let maskX=mouseX-mask.offsetWidth/2
+        let maskY=mouseY-mask.offsetHeight/2
         
         if(maskX>mask.offsetWidth){
           maskX=mask.offsetWidth

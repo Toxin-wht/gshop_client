@@ -27,11 +27,7 @@
 <script>
 export default {
   name: 'Pagination',
-  data(){
-      return{
-        myCurrentPage:this.currentPage
-      }
-  },
+  
   props:{
       currentPage:{
           type:Number,
@@ -52,6 +48,11 @@ export default {
           validator:function(value){
               return value % 2 !==0
           }
+      }
+  },
+  data(){
+      return{
+        myCurrentPage:this.currentPage
       }
   },
   computed:{
@@ -101,10 +102,13 @@ export default {
       }
   },
   watch:{
-      currentPage:{
-          handler(value){
-            this.myCurrentPage=value
-          }        
+    //   currentPage:{
+    //       handler(value){
+    //         this.myCurrentPage=value
+    //       }        
+    //   }
+      currentPage (value) {
+      this.myCurrentPage = value
       }
   },
 }
