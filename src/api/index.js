@@ -78,3 +78,10 @@ export const reqUserLogout=()=>{
         method:'get'
     })
 }
+//获取订单信息
+export const reqTradeInfo=()=>{
+    return ajax({
+        url:'/order/auth/trade',
+        method:'get'
+    })
+}
