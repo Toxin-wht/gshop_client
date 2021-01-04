@@ -5,10 +5,14 @@
                 <div class="container">
                     <div class="loginList">
                         <p>尚品汇欢迎您！</p>
-                        <p>
+                        <p v-if="$store.state.user.userInfo.name">
+                            <a href="javascript:;">{{$store.state.user.userInfo.name}}</a>
+                            <a href="javascript:;" class="register" @click="logout">退出登录</a>
+                        </p>
+                        <p v-else>
                             <span>请</span>
-                            <a href="###">登录</a>
-                            <a href="###" class="register">免费注册</a>
+                            <router-link to="/login">登录</router-link>
+                            <router-link class="register" to="/register">免费注册</router-link>
                         </p>
                     </div>
                     <div class="typeList">
@@ -73,6 +77,14 @@ export default {
         },
         deleteKeyword(){
             this.keyword=''
+        },
+        async logout(){
+            try {
+                await this.$store.dispatch('userLogout')
+                this.$router.push('/')
+            } catch (error) {
+                alert(error.message)
+            }  
         }
     },
     mounted(){

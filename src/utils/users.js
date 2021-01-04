@@ -7,4 +7,19 @@ function getUsersTempId() {
     }
     return userTemId
 }
-export {getUsersTempId}
+let key = 'TOKEN_KEY'
+function setToken(token){
+    localStorage.setItem(key,token)
+}
+function getToken() {
+    return localStorage.getItem(key)
+}
+function removeToken(){
+    localStorage.removeItem(key)
+}
+export {
+    getUsersTempId,
+    setToken,
+    getToken,
+    removeToken
+}

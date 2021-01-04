@@ -90,6 +90,7 @@
 
                     <div class="ads">
                         <img src="../images/home/ad1.png" />
+                        
                     </div>
                 </div>
             </div>
@@ -200,7 +201,7 @@ export default {
                         width: 25%;
 
                         .list-item {
-                            background-image: url(../images/home/icons.png);
+                            background-image: url(../../../assets/images/icons.png);
                             width: 61px;
                             height: 40px;
                             display: block;
