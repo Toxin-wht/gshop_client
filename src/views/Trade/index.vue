@@ -4,11 +4,11 @@
     <div class="content">
       <h5 class="receive">收件人信息</h5>
       <div class="address clearFix" v-for="userAddress in userAddressList" :key="userAddress.id">
-        <span class="username selected">{{userAddress.consignee}}</span>
-        <p>
+        <span class="username" :class="{selected:userAddress.isDefault==='1'}">{{userAddress.consignee}}</span>
+        <p @click="chooseAddress(userAddress,userAddressList)">
           <span class="s1">{{userAddress.userAddress}}</span>
           <span class="s2">{{userAddress.phoneNum}}</span>
-          <span class="s3">默认地址</span>
+          <span class="s3" v-if="userAddress.isDefault==='1'">默认地址</span>
         </p>
       </div>
       <div class="line"></div>
@@ -76,13 +76,13 @@
       <div class="price">应付金额:　<span>¥{{tradeInfo.totalAmount}}</span></div>
       <div class="receiveInfo">
         寄送至:
-        <span>北京市昌平区宏福科技园综合楼6层</span>
-        收货人：<span>张三</span>
-        <span>15010658793</span>
+        <span>{{address.userAddress}}</span>
+        收货人：<span>{{address.consignee}}</span>
+        <span>{{address.phoneNum}}</span>
       </div>
     </div>
     <div class="sub clearFix">
-      <router-link class="subBtn" to="/pay">提交订单</router-link>
+        <a href="javascript:;" class="subBtn" @click="submit">提交订单</a>
     </div>
   </div>
 </template>
@@ -93,7 +93,7 @@ import { mapGetters, mapState } from 'vuex'
     name: 'Trade',
     data(){
       return{
-        message:''
+        message:'',
       }
     },
     mounted(){
@@ -102,13 +102,45 @@ import { mapGetters, mapState } from 'vuex'
     methods:{
       getTrade(){
         this.$store.dispatch('getTradeInfo')
+      },
+      //排它思想 切换点击默认收获地址
+      chooseAddress(userAddress,userAddressList){
+        userAddressList.forEach(item=>item.isDefault='0')
+        userAddress.isDefault='1'
+      },
+      //编程式路由导航跳转时创建订单 
+      async submit(){
+        //交易编号与交易信息
+        let tradeNo=this.tradeInfo.tradeNo
+        let tradeData={
+            consignee: this.address.consignee,
+            consigneeTel: this.address.phoneNum,
+            deliveryAddress: this.address.userAddress,
+            paymentWay: "ONLINE",
+            orderComment: this.message,
+            orderDetailList:this.detailArrayList
+        }
+        try {
+          //发送请求
+          const result =await this.$API.reqSubmitOrder(tradeNo,tradeData)
+          if(result.code===200){
+            //将请求得到的订单编号 跳转路由时带到支付页面中
+            this.$router.push('/pay?orderId='+result.data)
+          }  
+        } catch (error) {
+          alert(error.message)
+        }
       }
     },
     computed:{
       ...mapGetters(['userAddressList','detailArrayList']),
       ...mapState({
         tradeInfo:state=>state.trade.tradeInfo
-      })
+      }),
+      //计算除最终选定的收货地址信息
+      address(){
+        return this.userAddressList.find(item=>item.isDefault==='1')||{}
+      }
     }
   }
 </script>

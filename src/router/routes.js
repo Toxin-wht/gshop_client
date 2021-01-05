@@ -6,6 +6,9 @@ import ShopDetail from '@/views/ShopDetail'
 import AddCartSuccess from '@/views/AddCartSuccess'
 import shopCart from '@/views/ShopCart'
 import Trade from '@/views/Trade'
+import Pay from '@/views/Pay'
+import PaySuccess from '@/views/PaySuccess'
+import Center from '@/views/Center'
 export default[
     {
         path:'/',
@@ -49,5 +52,17 @@ export default[
     {
         path:'/trade',
         component:Trade
+    },
+    {
+        path:'/pay',
+        component:Pay
+    },
+    {
+        path:'/paysuccess',
+        component:PaySuccess
+    },
+    {
+        path:'/center',
+        component:Center
     }
 ]
