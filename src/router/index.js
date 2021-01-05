@@ -40,15 +40,22 @@ router.beforeEach(async (to,from,next)=>{
         if(to.path==='/login'){
             next('/')
         }else{//已登录后 点击跳转其他页面
-            try {
-                await store.dispatch('getUserInfo')
+            //判断用户信息是否存在
+            let userInfo =!!store.state.user.userInfo.name
+            //如果存在无条件放行
+            if (userInfo) {
                 next()
-            } catch (error) {
-                alert('身份验证已过期')
-                store.dispatch('removeUser')
-                //与登录逻辑配合使用 去到之前想去但被打断的页面
-                next('/login?redirect='+to.path)
-            } 
+            }else{//如果不存在 获取用户信息
+                try {
+                    await store.dispatch('getUserInfo')
+                    next()
+                } catch (error) {
+                    alert('身份验证已过期')
+                    store.dispatch('removeUser')
+                    //与登录逻辑配合使用 去到之前想去但被打断的页面
+                    next('/login?redirect='+to.path)
+                } 
+            }    
         }
     }else{
         //未登录
